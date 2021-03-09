@@ -1,7 +1,8 @@
 package com.chao.wiki.controller;
 
-import com.chao.wiki.domain.Ebook;
+import com.chao.wiki.req.EbookReq;
 import com.chao.wiki.resp.CommonResp;
+import com.chao.wiki.resp.EbookResp;
 import com.chao.wiki.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +20,10 @@ public class EbookController {
 
 
     @GetMapping("/list1")
-    public CommonResp list() {
-        CommonResp<List<Ebook>> resp = new CommonResp<>();
-        List<Ebook> list = ebookService.list();
+    //参数名字一样会自动映射
+    public CommonResp list(EbookReq ebookReq) {
+        CommonResp<List<EbookResp>> resp = new CommonResp<>();
+        List<EbookResp> list = ebookService.list(ebookReq);
         resp.setContent(list);
         return resp;
     }
