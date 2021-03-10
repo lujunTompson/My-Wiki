@@ -1,5 +1,6 @@
 package com.chao.wiki.resp;
 
+//后端接口统一返回参数，方便前端统一处理
 public class CommonResp<T> {
 
     /**
