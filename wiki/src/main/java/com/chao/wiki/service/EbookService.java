@@ -6,6 +6,10 @@ import com.chao.wiki.mapper.EbookMapper;
 import com.chao.wiki.req.EbookReq;
 import com.chao.wiki.resp.EbookResp;
 import com.chao.wiki.util.CopyUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -14,6 +18,8 @@ import java.util.List;
 
 @Service
 public class EbookService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
 
     @Resource
     private EbookMapper ebookMapper;
@@ -24,7 +30,12 @@ public class EbookService {
         if (!ObjectUtils.isEmpty(ebookReq.getName())) {
             criteria.andNameLike("%" + ebookReq.getName() + "%");
         }
+        PageHelper.startPage(1, 2);
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
+
+        PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
+        LOG.info("总条数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
 
 //        ArrayList<EbookResp> respList = new ArrayList<>();
 //        for (Ebook ebook : ebookList) {

@@ -8,6 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+/*
+使用MapperScan扫描所有Mapper接口
+ */
+
 @ComponentScan("com.chao")
 @SpringBootApplication
 @MapperScan("com.chao.wiki.mapper")

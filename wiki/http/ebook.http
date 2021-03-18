@@ -1,2 +1,2 @@
 
-GET http://localhost:8880/ebook/list1?name=mysql
+GET http://localhost:8880/ebook/list1
