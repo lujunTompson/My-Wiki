@@ -1,7 +1,7 @@
 package com.chao.wiki.req;
 
 /*
-封装分页请求参数
+分页请求参数
  */
 
 public class PageReq {

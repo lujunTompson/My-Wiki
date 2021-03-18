@@ -1,10 +1,10 @@
 package com.chao.wiki.req;
 
 /*
-ebook请求参数
+电子书查询请求参数
  */
 
-public class EbookReq extends PageReq {
+public class EbookQueryReq extends PageReq {
     private Long id;
 
     private String name;

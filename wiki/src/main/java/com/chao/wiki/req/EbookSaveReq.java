@@ -1,6 +1,9 @@
-package com.chao.wiki.resp;
+package com.chao.wiki.req;
 
-public class EbookResp {
+/*
+电子书保存请求参数
+ */
+public class EbookSaveReq {
     private Long id;
 
     private String name;

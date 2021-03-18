@@ -3,14 +3,13 @@ package com.chao.wiki.service;
 import com.chao.wiki.domain.Ebook;
 import com.chao.wiki.domain.EbookExample;
 import com.chao.wiki.mapper.EbookMapper;
-import com.chao.wiki.req.EbookReq;
-import com.chao.wiki.resp.EbookResp;
+import com.chao.wiki.req.EbookQueryReq;
+import com.chao.wiki.req.EbookSaveReq;
+import com.chao.wiki.resp.EbookQueryResp;
 import com.chao.wiki.resp.PageResp;
 import com.chao.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -20,20 +19,30 @@ import java.util.List;
 @Service
 public class EbookService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
 
     @Resource
     private EbookMapper ebookMapper;
 
-    public PageResp<EbookResp> list(EbookReq ebookReq) {
+    /*
+    查询电子书信息
+     */
+    public PageResp<EbookQueryResp> list(EbookQueryReq ebookQueryReq) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        if (!ObjectUtils.isEmpty(ebookReq.getName())) {
-            criteria.andNameLike("%" + ebookReq.getName() + "%");
+
+        //如果指定名字，就模糊查询
+        if (!ObjectUtils.isEmpty(ebookQueryReq.getName())) {
+            criteria.andNameLike("%" + ebookQueryReq.getName() + "%");
         }
-        PageHelper.startPage(ebookReq.getPage(), ebookReq.getSize());
+
+        //分页查询，前端指定查询页码和每页条数
+        PageHelper.startPage(ebookQueryReq.getPage(), ebookQueryReq.getSize());
+
+        //查询得到结果
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
+        //得到总的行数
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
         long totalPageNum = pageInfo.getTotal();
 //        ArrayList<EbookResp> respList = new ArrayList<>();
@@ -44,11 +53,28 @@ public class EbookService {
 //        }
 
         //列表复制
-        List<EbookResp> ebookResps = CopyUtil.copyList(ebookList, EbookResp.class);
+        //将得到的实体类复制到ebook的返回参数中
+        List<EbookQueryResp> ebookQueryResps = CopyUtil.copyList(ebookList, EbookQueryResp.class);
 
-        PageResp<EbookResp> pageResp = new PageResp<>();
-        pageResp.setList(ebookResps);
+        //定义一个分页返回参数，传入得到的值后返回
+        PageResp<EbookQueryResp> pageResp = new PageResp<>();
+        pageResp.setList(ebookQueryResps);
         pageResp.setTotal(totalPageNum);
         return pageResp;
+    }
+
+    /*
+    保存电子书
+     */
+    public void save(EbookSaveReq ebookSaveReq) {
+        Ebook ebook = CopyUtil.copy(ebookSaveReq, Ebook.class);
+
+        //新增一个记录
+        if (ObjectUtils.isEmpty(ebook.getId())) {
+            ebookMapper.insert(ebook);
+        } else {
+            //更新现有记录
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
     }
 }
