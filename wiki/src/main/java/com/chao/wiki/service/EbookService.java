@@ -8,6 +8,7 @@ import com.chao.wiki.req.EbookSaveReq;
 import com.chao.wiki.resp.EbookQueryResp;
 import com.chao.wiki.resp.PageResp;
 import com.chao.wiki.util.CopyUtil;
+import com.chao.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class EbookService {
 
     @Resource
     private EbookMapper ebookMapper;
+
+    @Resource
+    private SnowFlake snowFlake;
 
     /*
     查询电子书信息
@@ -71,7 +75,9 @@ public class EbookService {
 
         //新增一个记录
         if (ObjectUtils.isEmpty(ebook.getId())) {
-            ebookMapper.insert(ebook);
+            //雪花算法生成一个新id
+            ebook.setId(snowFlake.nextId());
+            ebookMapper.insertSelective(ebook);
         } else {
             //更新现有记录
             ebookMapper.updateByPrimaryKey(ebook);
