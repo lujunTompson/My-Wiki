@@ -1,12 +1,19 @@
 package com.chao.wiki.req;
 
 /*
-分页请求参数
+分页请求参数,指定当前页和一条页含的记录数
  */
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
 public class PageReq {
+
+    @NotNull(message = "【页码】不能为空")
     private int page;
 
+    @NotNull(message = "【每页条数】不能为空")
+    @Max(value = 1000, message = "【每页条数】不能超过1000")
     private int size;
 
     public int getPage() {
