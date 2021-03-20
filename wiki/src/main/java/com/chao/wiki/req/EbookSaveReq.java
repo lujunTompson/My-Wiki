@@ -1,11 +1,14 @@
 package com.chao.wiki.req;
 
+import javax.validation.constraints.NotNull;
+
 /*
 电子书保存请求参数
  */
 public class EbookSaveReq {
     private Long id;
 
+    @NotNull(message = "【名称】不能为空")
     private String name;
 
     private Long category1Id;
