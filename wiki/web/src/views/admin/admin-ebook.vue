@@ -5,22 +5,22 @@
     >
       <p>
       <a-form layout="inline" :model="param">
-        <a-form-model-item>
+        <a-form-item>
           <a-input v-model:value="param.name" placeholder="名称">
           </a-input>
-        </a-form-model-item>
-        <a-form-model-item>
+        </a-form-item>
+        <a-form-item>
           <a-button
               type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})"
           >
             查询
           </a-button>
-        </a-form-model-item>
-        <a-form-model-item>
+        </a-form-item>
+        <a-form-item>
           <a-button type="primary" @click="add()">
             新增
           </a-button>
-        </a-form-model-item>
+        </a-form-item>
       </a-form>
       </p>
       <a-table
@@ -96,7 +96,7 @@ export default defineComponent({
     const ebooks = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 1000,
+      pageSize: 6,
       total: 0
     });
     const loading = ref(false);
